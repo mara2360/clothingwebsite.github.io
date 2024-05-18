@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang = ="en">
+	<head>
+		<link rel = "stylesheet" href = "WebsiteStyle.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+		<title> Ramshaw_Portfolio </title>
+		<meta charset = "UTF-8">
+		<meta name = "viewport" content = "width = device - width, initial - scale = 1">
+		<style></style>
+	</head>
+
+<body>
+<!--NAVAGATION BAR-->							
+	<div class="navbar">
+    	
+		<!--women's dropdown and tabs-->
+		<div class = "dropdown">
+			<button class = "dropbtn"> WOMEN'S
+				<i class = "fa fa-caret-down"> </i>
+			</button>
+		
+			<!--dropdown categories-->		
+			<div class = "dropdown-content">		
+  				<a href="#">CLOTHES</a>
+  				<a href="#">SHOES</a>
+        		<a href="#">ACCESSORIES</a>
+			</div>
+		</div>	
+	
+	<!----------------------->
+						
+	<!--men's dropdown and tabs-->						
+		<div class = "dropdown">
+			<button class = "dropbtn"> MEN'S
+				<i class = "fa fa-caret-down"> </i>
+			</button>
+
+			<!--dropdown categories-->					
+			<div class = "dropdown-content">		
+  				<a href="#">CLOTHES</a>
+  				<a href="#">SHOES</a>
+        		<a href="#">ACCESSORIES</a>
+			</div>
+		</div>
+	
+		<!----------------------->
+	
+		<!--kid's dropdown and tabs-->	
+  		<div class="dropdown">
+    		<button class="dropbtn"> KID'S 
+      			<i class="fa fa-caret-down"> </i>
+    		</button>
+    					
+			<!--dropdown categories-->						
+    		<div class="dropdown-content">
+      			<a href="#">CLOTHES</a>
+      			<a href="#">SHOES</a>
+      			<a href="#">ACCESSORIES</a>
+    		</div>			
+  		</div> 
+  	
+		<!----------------------->
+
+			
+    
+		<!--account dropdown and tabs-->	
+  		<div class = "dropdownRight">
+    		<button class="dropbtn"> ACCOUNT 
+      			<i class="fa fa-caret-down"> </i>
+    		</button>
+    					
+			<!--dropdown categories-->						
+    		<div class="dropdownRight-contentRight">
+      			<a href="#">FAVORITES</a>
+      			<a href="#">PROFILE</a>
+      			<a href="#">LOGIN/OUT</a>
+    		</div>	
+  		</div> 
+	
+		<!-- Shopping bag icon -->
+    	<a href="#" class="shopping-bag-icon" id="shopping-bag">
+    		<i class="fa fa-shopping-bag"></i>
+    		<span id = "total-price">$0.00</span>
+		</a>
+		<!----------------------->  
+						
+	</div>
+<!--END OF NAVAGATION BAR-->
+
+<!--HEADER-->
+	<div class = "background"> <!--image-->
+
+		<div class = "header">
+			<div class = "container">		
+				<h1> SLEAV SLEEK </h1>					
+			</div>		
+		</div>
+	</div>
+<!--END OF HEADER-->
+
+<div class="containerBar"> </div> <!--grey bar at bottom-->
+
+<!-- PRODUCT DISPLAY-->
+<div class="product-container">
+    <!-- Placeholder Product 1 -->
+    <div class="product">
+        <img src="img2.jpg" alt="Product 1">
+        <h2>Taylor Trousers</h2>
+        <p>These pants were made for walking. Complete with the Taylor Blazer!</p>
+        <p>$56.00</p>
+        <button onclick="addToCart('Product 1', 56.00)">Add to Cart</button>
+    </div>
+
+    <!-- Placeholder Product 2 -->
+    <div class="product">
+        <img src="img3.png" alt="Product 2">
+        <h2>Bionica Bralette</h2>
+        <p>Stretchable bralette that moves with you.</p>
+        <p>$25.00</p>
+        <button onclick="addToCart('Product 2', 25.00)">Add to Cart</button>
+    </div>
+
+    <!-- Placeholder Product 3 -->
+    <div class="product">
+        <img src="img4.jpg" alt="Product 3">
+        <h2>Adeline Adventure Backpack</h2>
+        <p>Wherever you go, she's there.</p>
+        <p>$60.00</p>
+        <button onclick="addToCart('Product 3', 60.00)">Add to Cart</button>
+    </div>
+    
+    <!-- Placeholder Product 4 -->
+    <div class="product">
+        <img src="img5.jpg" alt="Product 4">
+        <h2>Daisy Daylight Dress</h2>
+        <p>For a picnic or playdate, you'll look great.</p>
+        <p>$45.00</p>
+        <button onclick="addToCart('Product 4', 45.00)">Add to Cart</button>
+    </div>
+    
+    <!-- Placeholder Product 5 -->
+    <div class="product">
+        <img src="img6.jpg" alt="Product 5">
+        <h2>Taylor Tank Top</h2>
+        <p>Wear for a casual day out or dress it up chic, however you like it.</p>
+        <p>$15.00</p>
+        <button onclick="addToCart('Product 5', 15.00)">Add to Cart</button>
+    </div>
+    
+    <!-- Placeholder Product 6 -->
+    <div class="product">
+        <img src="img7.webp" alt="Product 6">
+        <h2>Petunia Purse</h2>
+        <p>All you need, in one place.</p>
+        <p>$55.00</p>
+        <button onclick="addToCart('Product 6', 55.00)">Add to Cart</button>
+    </div>
+</div>
+<!-- End of Product Display -->
+
+
+
+<!--CONTACT INFO-->
+	<br></br>
+	<div class = "footer">
+	<div class="footer-container">
+		<h3> Contact: </h3>
+		<a style = "color: white;" href = "mailto:retailstore@company.com"> 
+		retailstore@company.com</a>
+		
+		<a style = "color: white;" href = "tel:1234567890"> (123) 456-7890 </a>
+	</div>
+	</div>
+<!--END OF CONTACT INFO-->
+	<script src="WebsiteJava.js"></script>							
+	</body>
+</html>
+	
