@@ -285,32 +285,58 @@ body, h2, h3, h4, h5, h6
 .raffle
 {
 	background-color: #736055;
-	padding: 30px;
-	margin: 30px;
-	
-	margin-right: 20px;
+	padding: 50px;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	margin-right: 115px;
+	margin-left: 115px;
 	border: 1px solid #0D1B1E;
-	padding-top: 20px;
+
+	
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+	text-align: center;
+}
+
+.raffle-cream
+{
+	background-color: #f7f2e4;
+	padding: 50px;
+	border: 1px solid #0D1B1E;
+	width: 50%;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+	text-align: center;
 }
 
 .raffle h2
 {
-	background-color: #736055;
-	color: #f7f2e4;
+	background-color: #f7f2e4
 	position: relative;
     display: inline-block;
+    margin-bottom: 10px;
+    color: #0D1B1E;
 }
 
 .raffle p
 {
-	color: #f7f2e4;
+	color: #0D1B1E;
 	position: relative;
+	margin-bottom: 20px;
 }
 
 .raffle form
 {
     display: flex;
     align-items: stretch;
+    justify-content: center;
+    
 }
 
 .raffle input[type="email"]
@@ -352,6 +378,7 @@ body, h2, h3, h4, h5, h6
     align-items: center;
     justify-content: center;
     padding: 30px;
+    box-sizing: border-box;
 }
 
 .sale img
