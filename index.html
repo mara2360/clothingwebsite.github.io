@@ -7,25 +7,87 @@
   <link rel="stylesheet" href="css/indexStyle.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
-<body>
+<body class="home-page">
+  <div class="announcement-bar">
+    <span>Free shipping over $75</span>
+    <span>New arrivals just landed</span>
+    <span>Easy 30 day returns</span>
+  </div>
+
   <header class="site-header">
     <nav class="navbar" aria-label="Main navigation">
       <a class="brand" href="index.html">just life</a>
-      <div class="nav-links"><a href="WomenWebsite.html">Women</a><a href="MenWebsite.html">Men</a><a href="#new-arrivals">New Arrivals</a><a href="#newsletter">Sale</a></div>
+      <div class="nav-links"><a class="active" href="index.html">Home</a><a href="WomenWebsite.html">Women</a><a href="MenWebsite.html">Men</a></div>
       <div class="nav-actions"><button class="icon-button" type="button" aria-label="Account"><i class="fa fa-user"></i></button><button class="cart-toggle" type="button" id="shopping-bag" aria-expanded="false" aria-controls="cart-dropdown"><i class="fa fa-shopping-bag"></i><span id="cart-count">0</span><span id="total-price">$0.00</span></button></div>
       <aside class="cart-panel" id="cart-dropdown" aria-label="Shopping cart"><div class="cart-header"><strong>Your Bag</strong><button type="button" id="clear-cart">Clear</button></div><div id="cart-items"><p class="cart-empty">Your bag is empty.</p></div></aside>
     </nav>
-    <section class="hero">
-      <div class="carousel" aria-label="Featured collections"><div class="carousel-inner"><div class="carousel-item active"><img src="file:///C:/Users/mdram/OneDrive/Desktop/clothingwebsite.github.io-main/images/women/carousel/caro2.jpg" alt="Women's neutral outfit styled for everyday wear"></div><div class="carousel-item"><img src="file:///C:/Users/mdram/OneDrive/Desktop/clothingwebsite.github.io-main/images/men/carousel/menCaro3.jpg" alt="Men's layered outfit from the latest collection"></div><div class="carousel-item"><img src="file:///C:/Users/mdram/OneDrive/Desktop/clothingwebsite.github.io-main/images/women/carousel/caro3.jpg" alt="Fresh Just Life seasonal look"></div></div><button class="carousel-control prev" type="button" onclick="prevSlide()" aria-label="Previous slide"><i class="fa fa-chevron-left"></i></button><button class="carousel-control next" type="button" onclick="nextSlide()" aria-label="Next slide"><i class="fa fa-chevron-right"></i></button></div>
-      <div class="hero-copy"><p class="eyebrow">New season essentials</p><h1>Clothes for your everyday rhythm.</h1><p>Modern layers, easy fits, and polished staples made for living in.</p><div class="hero-actions"><a class="button primary" href="WomenWebsite.html">Shop Women</a><a class="button secondary" href="MenWebsite.html">Shop Men</a></div></div>
+
+    <section class="home-hero">
+      <div class="hero-media-grid">
+        <img class="hero-main-img" src="images/women/carousel/caro2.jpg" alt="Just Life women's featured look">
+        <img src="images/men/carousel/menCaro3.jpg" alt="Just Life men's featured look">
+        <img src="images/women/carousel/caro3.jpg" alt="Just Life seasonal styling">
+      </div>
+      <div class="home-hero-copy">
+        <p class="eyebrow">New season edit</p>
+        <h1>New looks for every plan.</h1>
+        <p>Fresh everyday outfits, easy basics, and polished layers made to mix, match, and repeat.</p>
+        <div class="hero-actions"><a class="button primary" href="WomenWebsite.html">Shop Women</a><a class="button secondary" href="MenWebsite.html">Shop Men</a></div>
+      </div>
     </section>
   </header>
+
   <main>
-    <section class="feature-strip" aria-label="Store benefits"><article><i class="fa fa-truck"></i><span>Free shipping over $75</span></article><article><i class="fa fa-sync"></i><span>Easy 30 day returns</span></article><article><i class="fa fa-heart"></i><span>Small-batch seasonal drops</span></article></section>
-    <section class="collections" id="new-arrivals"><div class="section-heading"><p class="eyebrow">Shop the edit</p><h2>Start with the good stuff.</h2></div><div class="collection-grid"><a class="collection-card" href="WomenWebsite.html"><img src="file:///C:/Users/mdram/OneDrive/Desktop/clothingwebsite.github.io-main/images/women/product/clothes1.png" alt="Women's clothing collection"><span>Women's Clothing</span></a><a class="collection-card" href="MenWebsite.html"><img src="file:///C:/Users/mdram/OneDrive/Desktop/clothingwebsite.github.io-main/images/men/product/men1.jpg" alt="Men's clothing collection"><span>Men's Clothing</span></a></div></section>
-    <section class="promo" id="newsletter"><div><p class="eyebrow">Mystery discount</p><h2>Ready for life?</h2><p>Join the list for early access, seasonal edits, and a welcome discount.</p></div><form class="signup-form"><label class="sr-only" for="home-email">Email address</label><input id="home-email" type="email" placeholder="you@example.com" required><button type="submit">Subscribe</button></form></section>
+    <section class="quick-categories" aria-label="Shop categories">
+      <a href="#">Dresses & Tops</a>
+      <a href="#">Basics</a>
+      <a href="#">Outerwear</a>
+      <a href="#">Men's Staples</a>
+    </section>
+
+    <section class="collections" id="new-arrivals">
+      <div class="section-heading centered-heading">
+        <p class="eyebrow">Shop by vibe</p>
+        <h2>Trending now</h2>
+      </div>
+      <div class="collection-grid three-up">
+        <a class="collection-card" href="#"><img src="images/women/product/clothes3.png" alt="Pink women's statement top"><span>Going Out</span></a>
+        <a class="collection-card" href="#"><img src="images/women/product/clothes1.png" alt="White women's layer"><span>Clean Girl Staples</span></a>
+        <a class="collection-card" href="#"><img src="images/men/product/men1.jpg" alt="Men's jacket"><span>Layer Up</span></a>
+      </div>
+    </section>
+
+    <section class="new-arrivals-row" aria-label="New arrivals preview">
+      <div class="section-heading centered-heading">
+        <p class="eyebrow">Fresh picks</p>
+        <h2>New arrivals</h2>
+      </div>
+      <div class="arrival-grid">
+        <a class="arrival-card" href="#"><img src="images/women/product/clothes2.png" alt="Bionica Black"><span>Bionica Black</span><strong>$25.00</strong></a>
+        <a class="arrival-card" href="#"><img src="images/women/product/clothes6.png" alt="Petunia Plum"><span>Petunia Plum</span><strong>$55.00</strong></a>
+        <a class="arrival-card" href="#"><img src="images/men/product/men2.jpg" alt="Phoenix Pant"><span>Phoenix Pant</span><strong>$48.00</strong></a>
+        <a class="arrival-card" href="#"><img src="images/men/product/men3.jpg" alt="Samuel Sweater"><span>Samuel Sweater</span><strong>$55.00</strong></a>
+      </div>
+    </section>
+
+    <section class="sale-callout">
+      <img src="images/index/saleImage1.png" alt="Just Life sale promotion">
+      <div>
+        <p class="eyebrow">Limited time</p>
+        <h2>Up to 40% off selected styles.</h2>
+        <p>Refresh your rotation with pieces that still feel easy after the sale ends.</p>
+        <a class="button primary" href="WomenWebsite.html">Shop Sale</a>
+      </div>
+    </section>
+
+    <section class="promo" id="newsletter">
+      <div><p class="eyebrow">Join the list</p><h2>Get first access to new drops.</h2><p>Sign up for new arrivals, styling notes, and subscriber-only discounts.</p></div>
+      <form class="signup-form"><label class="sr-only" for="home-email">Email address</label><input id="home-email" type="email" placeholder="you@example.com" required><button type="submit">Subscribe</button></form>
+    </section>
   </main>
-  <footer class="footer"><div><a class="brand footer-brand" href="index.html">just life</a><p>Everyday clothing with a cleaner point of view.</p></div><div><h3>Shop</h3><a href="WomenWebsite.html">Women</a><a href="MenWebsite.html">Men</a><a href="#newsletter">Sale</a></div><div><h3>Contact</h3><a href="mailto:justlife@info.com">justlife@info.com</a><a href="tel:1234567890">(123) 456-7890</a></div><div><h3>Follow</h3><div class="social-links"><a href="https://www.tiktok.com" aria-label="TikTok"><img src="file:///C:/Users/mdram/OneDrive/Desktop/clothingwebsite.github.io-main/images/tiktokIcon.png" alt=""></a><a href="https://www.instagram.com" aria-label="Instagram"><img src="file:///C:/Users/mdram/OneDrive/Desktop/clothingwebsite.github.io-main/images/instaIcon.png" alt=""></a></div></div></footer>
+
+  <footer class="footer"><div><a class="brand footer-brand" href="index.html">just life</a><p>Everyday clothing with a cleaner point of view.</p></div><div><h3>Shop</h3><a href="index.html">Home</a><a href="WomenWebsite.html">Women</a><a href="MenWebsite.html">Men</a></div><div><h3>Contact</h3><a href="mailto:justlife@info.com">justlife@info.com</a><a href="tel:1234567890">(123) 456-7890</a></div><div><h3>Follow</h3><div class="social-links"><a href="https://www.tiktok.com" aria-label="TikTok"><img src="images/tiktokIcon.png" alt=""></a><a href="https://www.instagram.com" aria-label="Instagram"><img src="images/instaIcon.png" alt=""></a></div></div></footer>
+
   <script src="js/WebsiteJava.js"></script>
 </body>
 </html>
