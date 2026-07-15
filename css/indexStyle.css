@@ -1,17 +1,5 @@
 @import url("WebsiteStyle.css");
 
-.announcement-bar {
-  display: flex;
-  justify-content: center;
-  gap: clamp(18px, 6vw, 80px);
-  padding: 10px 18px;
-  background: var(--ink);
-  color: var(--cream);
-  font-size: 0.78rem;
-  font-weight: 800;
-  text-transform: uppercase;
-}
-
 .home-hero {
   position: relative;
   min-height: 690px;
