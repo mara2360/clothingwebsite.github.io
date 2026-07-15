@@ -18,6 +18,7 @@
     if (!cartPanel) return;
     cartPanel.setAttribute("role", "dialog"); cartPanel.setAttribute("aria-modal", "true"); cartPanel.setAttribute("aria-labelledby", "cart-title");
     cartPanel.innerHTML = `<div class="cart-header"><div><p class="cart-kicker">Your selection</p><strong id="cart-title">Shopping bag</strong></div><button class="cart-close" type="button" aria-label="Close shopping bag">&times;</button></div><div class="shipping-message" id="shipping-message"></div><div id="cart-items" class="cart-items" aria-live="polite"></div><div class="cart-footer"><div class="cart-subtotal"><span>Subtotal</span><strong id="cart-subtotal">$0.00</strong></div><p>Taxes and shipping are calculated at checkout.</p><button class="checkout-button" type="button">Checkout securely</button><button id="clear-cart" class="clear-cart" type="button">Clear bag</button></div>`;
+    document.body.appendChild(cartPanel);
     const overlay = document.createElement("div"); overlay.className = "cart-overlay"; overlay.hidden = true; document.body.appendChild(overlay);
     overlay.addEventListener("click", closeCart); cartPanel.querySelector(".cart-close").addEventListener("click", closeCart);
     cartPanel.querySelector("#clear-cart").addEventListener("click", () => { cart = []; saveCart(); renderCart(); });
