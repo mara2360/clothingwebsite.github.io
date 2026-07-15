@@ -24,11 +24,27 @@
     cartPanel.querySelector(".checkout-button").addEventListener("click", event => { if (!cart.length) return; event.currentTarget.textContent = "Checkout coming soon"; setTimeout(() => { event.currentTarget.textContent = "Checkout securely"; }, 1800); });
   }
   function renderCart() {
-    const itemsNode = document.getElementById("cart-items"); if (!itemsNode || !cartCount || !totalPrice) return;
-    const total = subtotal(); cartCount.textContent = itemCount(); totalPrice.textContent = money(total); document.getElementById("cart-subtotal").textContent = money(total);
-    const left = Math.max(0, 75 - total); document.getElementById("shipping-message").innerHTML = left ? `<span>Add <strong>${money(left)}</strong> for free shipping</span><div class="shipping-track"><i style="width:${Math.min(100, total / 75 * 100)}%"></i></div>` : `<span><strong>You unlocked free shipping!</strong></span><div class="shipping-track"><i style="width:100%"></i></div>`;
-    itemsNode.innerHTML = cart.length ? cart.map((item, index) => `<article class="cart-line">${item.image ? `<img src="${escapeHtml(item.image)}" alt="">` : ""}<div class="cart-line-info"><strong>${escapeHtml(item.name)}</strong><small>Size ${escapeHtml(item.size)}</small><span>${money(item.price)}</span><div class="quantity-control" aria-label="Quantity for ${escapeHtml(item.name)}"><button type="button" data-action="decrease" data-index="${index}" aria-label="Decrease quantity">−</button><span>${item.quantity}</span><button type="button" data-action="increase" data-index="${index}" aria-label="Increase quantity">+</button></div></div><button class="remove-item" type="button" data-action="remove" data-index="${index}" aria-label="Remove ${escapeHtml(item.name)}">Remove</button></article>`).join("") : `<div class="cart-empty"><span aria-hidden="true">♡</span><strong>Your bag is waiting</strong><p>Explore the collection and add something you love.</p><a href="WomenWebsite.html">Shop women</a><a href="MenWebsite.html">Shop men</a></div>`;
-    cartPanel.querySelector(".checkout-button").disabled = !cart.length; cartPanel.querySelector(".clear-cart").hidden = !cart.length;
+    const itemsNode = document.getElementById("cart-items");
+    if (!itemsNode || !cartCount || !totalPrice) return;
+    const total = subtotal();
+    cartCount.textContent = itemCount();
+    totalPrice.textContent = money(total);
+    document.getElementById("cart-subtotal").textContent = money(total);
+    const left = Math.max(0, 75 - total);
+    document.getElementById("shipping-message").innerHTML = left ? `<span>Add <strong>${money(left)}</strong> for free shipping</span><div class="shipping-track"><i style="width:${Math.min(100, total / 75 * 100)}%"></i></div>` : `<span><strong>You unlocked free shipping!</strong></span><div class="shipping-track"><i style="width:100%"></i></div>`;
+    itemsNode.innerHTML = cart.length ? cart.map((item, index) => `
+      <article class="cart-line">
+        ${item.image ? `<img src="${escapeHtml(item.image)}" alt="">` : ""}
+        <div class="cart-line-info">
+          <strong>${escapeHtml(item.name)}</strong>
+          <span>${money(item.price)}</span>
+          <label class="cart-size">Size <select data-cart-size data-index="${index}" aria-label="Size for ${escapeHtml(item.name)}">${["XS", "S", "M", "L"].map(size => `<option value="${size}"${size === item.size ? " selected" : ""}>${size}</option>`).join("")}</select></label>
+          <div class="quantity-control" aria-label="Quantity for ${escapeHtml(item.name)}"><button type="button" data-action="decrease" data-index="${index}" aria-label="Decrease quantity">−</button><span>${item.quantity}</span><button type="button" data-action="increase" data-index="${index}" aria-label="Increase quantity">+</button></div>
+        </div>
+        <button class="remove-item" type="button" data-action="remove" data-index="${index}" aria-label="Remove ${escapeHtml(item.name)}">Remove</button>
+      </article>`).join("") : `<div class="cart-empty"><span aria-hidden="true">♡</span><strong>Your bag is waiting</strong><p>Explore the collection and add something you love.</p><a href="WomenWebsite.html">Shop women</a><a href="MenWebsite.html">Shop men</a></div>`;
+    cartPanel.querySelector(".checkout-button").disabled = !cart.length;
+    cartPanel.querySelector(".clear-cart").hidden = !cart.length;
   }
   function openCart() { if (!cartPanel) return; lastFocusedElement = document.activeElement; cartPanel.classList.add("open"); document.querySelector(".cart-overlay").hidden = false; document.body.classList.add("cart-open"); cartToggle.setAttribute("aria-expanded", "true"); cartPanel.querySelector(".cart-close").focus(); }
   function closeCart() { if (!cartPanel) return; cartPanel.classList.remove("open"); document.querySelector(".cart-overlay").hidden = true; document.body.classList.remove("cart-open"); cartToggle.setAttribute("aria-expanded", "false"); lastFocusedElement?.focus(); }
@@ -77,6 +93,19 @@
   initializeCollectionTools();
   buildCart(); renderCart(); cartToggle?.addEventListener("click", () => cartPanel.classList.contains("open") ? closeCart() : openCart());
   document.addEventListener("click", event => { const button = event.target.closest("[data-action]"); if (!button?.closest(".cart-panel")) return; const index = Number(button.dataset.index); if (button.dataset.action === "increase") cart[index].quantity += 1; if (button.dataset.action === "decrease") cart[index].quantity -= 1; if (button.dataset.action === "remove" || cart[index]?.quantity === 0) cart.splice(index, 1); saveCart(); renderCart(); });
+  document.addEventListener("change", event => {
+    const select = event.target.closest("[data-cart-size]");
+    if (!select) return;
+    const index = Number(select.dataset.index);
+    const item = cart[index];
+    const duplicateIndex = cart.findIndex((candidate, candidateIndex) => candidateIndex !== index && candidate.name === item.name && candidate.size === select.value);
+    if (duplicateIndex >= 0) {
+      cart[duplicateIndex].quantity += item.quantity;
+      cart.splice(index, 1);
+    } else item.size = select.value;
+    saveCart();
+    renderCart();
+  });
   document.addEventListener("keydown", event => { if (event.key === "Escape" && cartPanel?.classList.contains("open")) closeCart(); });
   document.querySelectorAll(".wishlist-button").forEach(button => button.addEventListener("click", () => { button.classList.toggle("saved"); button.setAttribute("aria-pressed", String(button.classList.contains("saved"))); const icon = button.querySelector("i"); if (icon) icon.className = button.classList.contains("saved") ? "fas fa-heart" : "far fa-heart"; }));
   document.querySelectorAll(".signup-form").forEach(form => form.addEventListener("submit", event => { event.preventDefault(); const button = form.querySelector("button"); button.textContent = "You're on the list!"; button.disabled = true; }));

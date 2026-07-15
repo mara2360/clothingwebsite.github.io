@@ -969,6 +969,8 @@ body.cart-open .navbar { backdrop-filter: none; }
 .cart-line > img { width: 82px; height: 104px; object-fit: cover; background: #eee1d2; }
 .cart-line-info { display: flex; align-items: flex-start; flex-direction: column; gap: 5px; }
 .cart-line-info small { color: var(--muted); }
+.cart-size { display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: .78rem; font-weight: 800; text-transform: uppercase; }
+.cart-size select { min-width: 58px; height: 30px; padding: 0 7px; border: 1px solid #000; border-radius: 0; background: #fff; color: #000; cursor: pointer; font: inherit; }
 .quantity-control { display: inline-grid; grid-template-columns: 34px 34px 34px; align-items: center; margin-top: 8px; border: 1px solid var(--line); text-align: center; }
 .quantity-control button { height: 32px; border: 0; background: transparent; cursor: pointer; font-size: 1.1rem; }
 .remove-item { align-self: start; padding: 0; font-size: .78rem; text-decoration: underline; }
