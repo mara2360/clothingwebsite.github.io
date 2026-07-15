@@ -1,142 +1,51 @@
-let currentIndex = 0;
-let cart = JSON.parse(localStorage.getItem("justLifeCart") || "[]");
-const carouselInner = document.querySelector(".carousel-inner");
-const slides = document.querySelectorAll(".carousel-item");
-const cartDropdown = document.getElementById("cart-dropdown");
-const shoppingBagIcon = document.getElementById("shopping-bag");
-const totalPriceElement = document.getElementById("total-price");
-const cartCountElement = document.getElementById("cart-count");
-const cartItemsElement = document.getElementById("cart-items");
-const clearCartButton = document.getElementById("clear-cart");
-function showSlide(index) {
-    if (!carouselInner || slides.length === 0)
-        return;
-    if (index >= slides.length)
-        currentIndex = 0;
-    else if (index < 0)
-        currentIndex = slides.length - 1;
-    else
-        currentIndex = index;
-    carouselInner.style.transform = `translateX(-${currentIndex * 100}%)`
-}
-function nextSlide() {
-    showSlide(currentIndex + 1)
-}
-function prevSlide() {
-    showSlide(currentIndex - 1)
-}
-function openCart() {
-    if (!cartDropdown || !shoppingBagIcon)
-        return;
-    cartDropdown.classList.add("open");
-    shoppingBagIcon.setAttribute("aria-expanded", "true")
-}
-function closeCart() {
-    if (!cartDropdown || !shoppingBagIcon)
-        return;
-    cartDropdown.classList.remove("open");
-    shoppingBagIcon.setAttribute("aria-expanded", "false")
-}
-function saveCart() {
-    localStorage.setItem("justLifeCart", JSON.stringify(cart))
-}
-function updateCart() {
-    if (!totalPriceElement || !cartCountElement || !cartItemsElement)
-        return;
-    const total = cart.reduce( (sum, item) => sum + item.price, 0);
-    totalPriceElement.textContent = `$${total.toFixed(2)}`;
-    cartCountElement.textContent = cart.length;
-    if (cart.length === 0) {
-        cartItemsElement.innerHTML = '<p class="cart-empty">Your bag is empty.</p>';
-        return
-    }
-    cartItemsElement.innerHTML = cart.map( (item, index) => `<div class="cart-item"><div><strong>${item.name}</strong><br><small>Size ${item.size} - $${item.price.toFixed(2)}</small></div><button class="remove-item" type="button" data-index="${index}" aria-label="Remove ${item.name}">Remove</button></div>`).join("")
-}
-function addToCart(product) {
-    const selectedSize = product.querySelector(".size.selected");
-    const addButton = product.querySelector(".add-to-cart");
-    if (!selectedSize) {
-        addButton.textContent = "Choose a Size";
-        window.setTimeout( () => {
-            addButton.textContent = "Add to Bag"
-        }
-        , 1400);
-        return
-    }
-    cart.push({
-        name: product.dataset.name,
-        price: Number(product.dataset.price),
-        size: selectedSize.dataset.size
-    });
-    saveCart();
-    updateCart();
-    openCart();
-    addButton.textContent = "Added";
-    window.setTimeout( () => {
-        addButton.textContent = "Add to Bag"
-    }
-    , 1200)
-}
-document.querySelectorAll(".size").forEach(sizeButton => {
-    sizeButton.addEventListener("click", () => {
-        const product = sizeButton.closest(".product");
-        product.querySelectorAll(".size").forEach(button => button.classList.remove("selected"));
-        sizeButton.classList.add("selected")
-    }
-    )
-}
-);
-document.querySelectorAll(".add-to-cart").forEach(button => {
-    button.addEventListener("click", () => addToCart(button.closest(".product")))
-}
-);
-if (shoppingBagIcon) {
-    shoppingBagIcon.addEventListener("click", event => {
-        event.stopPropagation();
-        cartDropdown.classList.contains("open") ? closeCart() : openCart()
-    }
-    )
-}
-if (cartItemsElement) {
-    cartItemsElement.addEventListener("click", event => {
-        const removeButton = event.target.closest(".remove-item");
-        if (!removeButton)
-            return;
-        cart.splice(Number(removeButton.dataset.index), 1);
-        saveCart();
-        updateCart()
-    }
-    )
-}
-if (clearCartButton) {
-    clearCartButton.addEventListener("click", () => {
-        cart = [];
-        saveCart();
-        updateCart()
-    }
-    )
-}
-document.querySelectorAll(".signup-form").forEach(form => {
-    form.addEventListener("submit", event => {
-        event.preventDefault();
-        const button = form.querySelector("button");
-        button.textContent = "Subscribed";
-        form.reset();
-        window.setTimeout( () => {
-            button.textContent = "Subscribe"
-        }
-        , 1600)
-    }
-    )
-}
-);
-document.addEventListener("click", event => {
-    if (!cartDropdown || !shoppingBagIcon)
-        return;
-    if (!cartDropdown.contains(event.target) && !shoppingBagIcon.contains(event.target))
-        closeCart()
-}
-);
-updateCart();
-if (slides.length > 1)
-    window.setInterval(nextSlide, 5000);
+(() => {
+  "use strict";
+  const CART_KEY = "justLifeCartV2";
+  const legacyCart = JSON.parse(localStorage.getItem("justLifeCart") || "[]");
+  let cart = JSON.parse(localStorage.getItem(CART_KEY) || "null") || legacyCart.map(item => ({ ...item, quantity: 1 }));
+  let lastFocusedElement = null;
+  const cartPanel = document.getElementById("cart-dropdown");
+  const cartToggle = document.getElementById("shopping-bag");
+  const cartCount = document.getElementById("cart-count");
+  const totalPrice = document.getElementById("total-price");
+  const money = value => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(value);
+  const escapeHtml = value => String(value).replace(/[&<>'"]/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character]);
+  const subtotal = () => cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const itemCount = () => cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  function saveCart() { localStorage.setItem(CART_KEY, JSON.stringify(cart)); localStorage.removeItem("justLifeCart"); }
+  function buildCart() {
+    if (!cartPanel) return;
+    cartPanel.setAttribute("role", "dialog"); cartPanel.setAttribute("aria-modal", "true"); cartPanel.setAttribute("aria-labelledby", "cart-title");
+    cartPanel.innerHTML = `<div class="cart-header"><div><p class="cart-kicker">Your selection</p><strong id="cart-title">Shopping bag</strong></div><button class="cart-close" type="button" aria-label="Close shopping bag">&times;</button></div><div class="shipping-message" id="shipping-message"></div><div id="cart-items" class="cart-items" aria-live="polite"></div><div class="cart-footer"><div class="cart-subtotal"><span>Subtotal</span><strong id="cart-subtotal">$0.00</strong></div><p>Taxes and shipping are calculated at checkout.</p><button class="checkout-button" type="button">Checkout securely</button><button id="clear-cart" class="clear-cart" type="button">Clear bag</button></div>`;
+    const overlay = document.createElement("div"); overlay.className = "cart-overlay"; overlay.hidden = true; document.body.appendChild(overlay);
+    overlay.addEventListener("click", closeCart); cartPanel.querySelector(".cart-close").addEventListener("click", closeCart);
+    cartPanel.querySelector("#clear-cart").addEventListener("click", () => { cart = []; saveCart(); renderCart(); });
+    cartPanel.querySelector(".checkout-button").addEventListener("click", event => { if (!cart.length) return; event.currentTarget.textContent = "Checkout coming soon"; setTimeout(() => { event.currentTarget.textContent = "Checkout securely"; }, 1800); });
+  }
+  function renderCart() {
+    const itemsNode = document.getElementById("cart-items"); if (!itemsNode || !cartCount || !totalPrice) return;
+    const total = subtotal(); cartCount.textContent = itemCount(); totalPrice.textContent = money(total); document.getElementById("cart-subtotal").textContent = money(total);
+    const left = Math.max(0, 75 - total); document.getElementById("shipping-message").innerHTML = left ? `<span>Add <strong>${money(left)}</strong> for free shipping</span><div class="shipping-track"><i style="width:${Math.min(100, total / 75 * 100)}%"></i></div>` : `<span><strong>You unlocked free shipping!</strong></span><div class="shipping-track"><i style="width:100%"></i></div>`;
+    itemsNode.innerHTML = cart.length ? cart.map((item, index) => `<article class="cart-line">${item.image ? `<img src="${escapeHtml(item.image)}" alt="">` : ""}<div class="cart-line-info"><strong>${escapeHtml(item.name)}</strong><small>Size ${escapeHtml(item.size)}</small><span>${money(item.price)}</span><div class="quantity-control" aria-label="Quantity for ${escapeHtml(item.name)}"><button type="button" data-action="decrease" data-index="${index}" aria-label="Decrease quantity">−</button><span>${item.quantity}</span><button type="button" data-action="increase" data-index="${index}" aria-label="Increase quantity">+</button></div></div><button class="remove-item" type="button" data-action="remove" data-index="${index}" aria-label="Remove ${escapeHtml(item.name)}">Remove</button></article>`).join("") : `<div class="cart-empty"><span aria-hidden="true">♡</span><strong>Your bag is waiting</strong><p>Explore the collection and add something you love.</p><a href="WomenWebsite.html">Shop women</a><a href="MenWebsite.html">Shop men</a></div>`;
+    cartPanel.querySelector(".checkout-button").disabled = !cart.length; cartPanel.querySelector(".clear-cart").hidden = !cart.length;
+  }
+  function openCart() { if (!cartPanel) return; lastFocusedElement = document.activeElement; cartPanel.classList.add("open"); document.querySelector(".cart-overlay").hidden = false; document.body.classList.add("cart-open"); cartToggle.setAttribute("aria-expanded", "true"); cartPanel.querySelector(".cart-close").focus(); }
+  function closeCart() { if (!cartPanel) return; cartPanel.classList.remove("open"); document.querySelector(".cart-overlay").hidden = true; document.body.classList.remove("cart-open"); cartToggle.setAttribute("aria-expanded", "false"); lastFocusedElement?.focus(); }
+  function addProduct(product, size) { const name = product.dataset.name; const price = Number(product.dataset.price); const image = product.querySelector("img")?.getAttribute("src") || ""; const existing = cart.find(item => item.name === name && item.size === size); if (existing) existing.quantity += 1; else cart.push({ name, price, size, image, quantity: 1 }); saveCart(); renderCart(); openCart(); }
+
+  const quickView = document.createElement("dialog"); quickView.className = "quick-view"; quickView.innerHTML = `<button class="quick-view-close" type="button" aria-label="Close product details">&times;</button><div class="quick-view-content"></div>`; document.body.appendChild(quickView);
+  quickView.querySelector(".quick-view-close").addEventListener("click", () => quickView.close()); quickView.addEventListener("click", event => { if (event.target === quickView) quickView.close(); });
+  document.querySelectorAll(".product").forEach(product => {
+    const image = product.querySelector("img"); image.tabIndex = 0; image.setAttribute("role", "button"); image.setAttribute("aria-label", `View details for ${product.dataset.name}`);
+    const openDetails = () => { const type = product.querySelector(".product-type")?.textContent || "Just Life essential"; quickView.querySelector(".quick-view-content").innerHTML = `<div class="quick-view-image"><img src="${image.getAttribute("src")}" alt="${escapeHtml(product.dataset.name)}"></div><div class="quick-view-details"><p class="product-type">${escapeHtml(type)}</p><h2>${escapeHtml(product.dataset.name)}</h2><p class="quick-view-price">${money(Number(product.dataset.price))}</p><p class="quick-view-copy">An easy-to-style piece selected for comfort, repeat wear, and everyday plans.</p><p class="size-label">Select a size</p><div class="quick-sizes">${["XS","S","M","L"].map(size => `<button type="button" data-size="${size}">${size}</button>`).join("")}</div><p class="size-error" aria-live="polite"></p><button class="quick-add" type="button">Add to bag</button><ul><li>Free shipping on orders over $75</li><li>Easy 30-day returns</li></ul></div>`; quickView.showModal(); quickView.querySelectorAll(".quick-sizes button").forEach(button => button.addEventListener("click", () => { quickView.querySelectorAll(".quick-sizes button").forEach(option => option.classList.remove("selected")); button.classList.add("selected"); quickView.querySelector(".size-error").textContent = ""; })); quickView.querySelector(".quick-add").addEventListener("click", () => { const size = quickView.querySelector(".quick-sizes .selected")?.dataset.size; if (!size) { quickView.querySelector(".size-error").textContent = "Please choose a size first."; return; } quickView.close(); addProduct(product, size); }); };
+    image.addEventListener("click", openDetails); image.addEventListener("keydown", event => { if (["Enter", " "].includes(event.key)) { event.preventDefault(); openDetails(); } });
+    product.querySelectorAll(".size").forEach(button => button.addEventListener("click", () => { product.querySelectorAll(".size").forEach(option => option.classList.remove("selected")); button.classList.add("selected"); }));
+    product.querySelector(".add-to-cart")?.addEventListener("click", event => { const size = product.querySelector(".size.selected")?.dataset.size; if (!size) { event.currentTarget.textContent = "Select a size first"; setTimeout(() => { event.currentTarget.textContent = "Quick Add"; }, 1500); return; } addProduct(product, size); });
+  });
+  buildCart(); renderCart(); cartToggle?.addEventListener("click", () => cartPanel.classList.contains("open") ? closeCart() : openCart());
+  document.addEventListener("click", event => { const button = event.target.closest("[data-action]"); if (!button?.closest(".cart-panel")) return; const index = Number(button.dataset.index); if (button.dataset.action === "increase") cart[index].quantity += 1; if (button.dataset.action === "decrease") cart[index].quantity -= 1; if (button.dataset.action === "remove" || cart[index]?.quantity === 0) cart.splice(index, 1); saveCart(); renderCart(); });
+  document.addEventListener("keydown", event => { if (event.key === "Escape" && cartPanel?.classList.contains("open")) closeCart(); });
+  document.querySelectorAll(".wishlist-button").forEach(button => button.addEventListener("click", () => { button.classList.toggle("saved"); button.setAttribute("aria-pressed", String(button.classList.contains("saved"))); const icon = button.querySelector("i"); if (icon) icon.className = button.classList.contains("saved") ? "fas fa-heart" : "far fa-heart"; }));
+  document.querySelectorAll(".signup-form").forEach(form => form.addEventListener("submit", event => { event.preventDefault(); const button = form.querySelector("button"); button.textContent = "You're on the list!"; button.disabled = true; }));
+})();
