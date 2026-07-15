@@ -701,9 +701,11 @@ h2 {
 }
 
 /* Collection page refresh */
+.announcement-bar,
 .collection-announcement {
   display: flex;
   justify-content: center;
+  gap: clamp(18px, 6vw, 80px);
   padding: 10px 18px;
   background: var(--ink);
   color: var(--cream);
@@ -711,6 +713,12 @@ h2 {
   font-weight: 800;
   text-align: center;
   text-transform: uppercase;
+}
+
+@media (max-width: 620px) {
+  .announcement-bar span:not(:first-child) {
+    display: none;
+  }
 }
 
 .collection-topper {
