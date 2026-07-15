@@ -162,7 +162,7 @@
 
 .arrival-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 18px;
   margin-top: 32px;
 }
@@ -179,6 +179,7 @@
   object-fit: cover;
   border-radius: 8px;
   background: #eee1d2;
+  object-position: center top;
 }
 
 .arrival-card span,
