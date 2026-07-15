@@ -995,7 +995,7 @@ body.cart-open { overflow: hidden; }
 .navbar { background: rgba(255,255,255,.96); border-color: #000; }
 .nav-links a, .eyebrow, .product-type, .cart-kicker { letter-spacing: .1em; }
 .announcement-bar, .collection-announcement { background: #000; color: #fff; }
-.product img, .arrival-card img, .collection-card img, .hero-media-grid img, .sale-callout img, .quick-view-image img, .cart-line > img { filter: grayscale(1); }
+.product img, .arrival-card img, .collection-card img, .hero-media-grid img, .sale-callout img, .quick-view-image img, .cart-line > img { filter: grayscale(1) contrast(1.08); }
 .product, .collection-card, .arrival-card img, .sale-callout img, .promo, .cart-panel, .quick-view, .button, .add-to-cart, .signup-form input, .signup-form button, .size, .filter-pill, .collection-tabs a, .collection-toolbar button { border-radius: 0; }
 .product { border-color: #000; box-shadow: none; }
 .product-badge, .product-badge.subtle { background: #000; color: #fff; }
