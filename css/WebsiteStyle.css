@@ -1,15 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap");
+
 :root {
-  --cream: #f7f2e8;
-  --paper: #fffaf0;
-  --ink: #101820;
-  --muted: #6f655d;
-  --clay: #9b5c47;
-  --olive: #66745f;
-  --sage: #dfe7d7;
-  --blush: #f3d7c6;
-  --line: rgba(16, 24, 32, 0.14);
-  --soft-line: rgba(255, 250, 240, 0.22);
-  --shadow: 0 18px 40px rgba(16, 24, 32, 0.13);
+  --cream: #f4f4f2;
+  --paper: #ffffff;
+  --ink: #050505;
+  --muted: #595959;
+  --clay: #111111;
+  --olive: #1b1b1b;
+  --sage: #e5e5e5;
+  --blush: #f1f1f1;
+  --line: rgba(0, 0, 0, 0.22);
+  --soft-line: rgba(255, 255, 255, 0.3);
+  --shadow: 0 18px 40px rgba(0, 0, 0, 0.18);
 }
 
 * {
@@ -24,7 +26,7 @@ body {
   margin: 0;
   background: var(--cream);
   color: var(--ink);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Space Grotesk", "Arial Narrow", Arial, sans-serif;
 }
 
 img {
@@ -54,10 +56,11 @@ a {
 }
 
 .brand {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Syne", "Arial Black", sans-serif;
   font-size: 1.55rem;
   font-weight: 700;
-  letter-spacing: 0.02em;
+  letter-spacing: -0.06em;
+  text-transform: uppercase;
   text-decoration: none;
 }
 
@@ -273,7 +276,9 @@ p {
 
 h1,
 h2 {
-  font-family: Georgia, "Times New Roman", serif;
+  font-family: "Syne", "Arial Black", sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.055em;
 }
 
 h1 {
@@ -404,7 +409,7 @@ h2 {
 
 .product h2 {
   margin-bottom: 8px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Space Grotesk", "Arial Narrow", Arial, sans-serif;
   font-size: 1.08rem;
 }
 
@@ -728,6 +733,38 @@ h2 {
   line-height: 1.7;
 }
 
+.collection-campaign {
+  position: relative;
+  height: clamp(420px, 68vw, 780px);
+  margin: 0;
+  overflow: hidden;
+  border-bottom: 1px solid #000;
+  background: #111;
+}
+
+.collection-campaign img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 25%;
+  filter: grayscale(1);
+}
+
+.collection-campaign figcaption {
+  position: absolute;
+  inset: auto 0 0;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  padding: 22px clamp(20px, 5vw, 72px);
+  background: linear-gradient(transparent, rgba(0,0,0,.72));
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.collection-campaign figcaption span { font-size: .72rem; letter-spacing: .12em; }
+.collection-campaign figcaption strong { font: 700 clamp(1.4rem, 4vw, 3.5rem)/1 "Syne", sans-serif; letter-spacing: -.05em; }
+
 .breadcrumb {
   margin-bottom: 14px;
   color: var(--muted);
@@ -953,3 +990,25 @@ body.cart-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto!important; transition-duration: .01ms!important; animation-duration: .01ms!important; }
 }
+
+/* Monochrome editorial direction */
+.navbar { background: rgba(255,255,255,.96); border-color: #000; }
+.nav-links a, .eyebrow, .product-type, .cart-kicker { letter-spacing: .1em; }
+.announcement-bar, .collection-announcement { background: #000; color: #fff; }
+.product img, .arrival-card img, .collection-card img, .hero-media-grid img, .sale-callout img, .quick-view-image img, .cart-line > img { filter: grayscale(1); }
+.product, .collection-card, .arrival-card img, .sale-callout img, .promo, .cart-panel, .quick-view, .button, .add-to-cart, .signup-form input, .signup-form button, .size, .filter-pill, .collection-tabs a, .collection-toolbar button { border-radius: 0; }
+.product { border-color: #000; box-shadow: none; }
+.product-badge, .product-badge.subtle { background: #000; color: #fff; }
+.wishlist-button { background: #fff; border-color: #000; }
+.wishlist-button.saved { background: #000; color: #fff; }
+.button.primary, .add-to-cart, .signup-form button, .checkout-button, .quick-add { background: #000; color: #fff; border-color: #000; text-transform: uppercase; letter-spacing: .08em; }
+.button:hover, .add-to-cart:hover, .signup-form button:hover, .checkout-button:hover, .quick-add:hover { background: #fff; color: #000; border-color: #000; }
+.button.secondary { border-color: #fff; }
+.size:hover, .size.selected, .quick-sizes button.selected, .filter-pill:hover, .filter-pill.active, .collection-tabs a:hover, .collection-tabs a.active { background: #000; color: #fff; border-color: #000; }
+.promo { background: #111; }
+.footer { background: #000; }
+.shipping-message { background: #eee; }
+.shipping-track i { background: #000; }
+.home-hero-copy h1, .collection-topper h1 { text-transform: uppercase; }
+.collection-card span { font-family: "Syne", "Arial Black", sans-serif; font-weight: 700; letter-spacing: -.05em; text-transform: uppercase; }
+.cart-header strong, .cart-empty strong { font-family: "Syne", "Arial Black", sans-serif; letter-spacing: -.04em; }
