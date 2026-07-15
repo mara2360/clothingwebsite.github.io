@@ -43,6 +43,38 @@
     product.querySelectorAll(".size").forEach(button => button.addEventListener("click", () => { product.querySelectorAll(".size").forEach(option => option.classList.remove("selected")); button.classList.add("selected"); }));
     product.querySelector(".add-to-cart")?.addEventListener("click", event => { const size = product.querySelector(".size.selected")?.dataset.size; if (!size) { event.currentTarget.textContent = "Select a size first"; setTimeout(() => { event.currentTarget.textContent = "Quick Add"; }, 1500); return; } addProduct(product, size); });
   });
+  function initializeCollectionTools() {
+    const grid = document.querySelector(".collection-grid-products");
+    const toolbar = document.querySelector(".collection-toolbar");
+    if (!grid || !toolbar) return;
+    const products = [...grid.querySelectorAll(".product")];
+    products.forEach((product, index) => { product.dataset.featuredOrder = index; });
+    const categories = [...new Set(products.map(product => product.querySelector(".product-type")?.textContent.trim()).filter(Boolean))].sort();
+    toolbar.innerHTML = `<label class="collection-control"><span>Filter</span><select id="category-filter"><option value="all">All categories</option>${categories.map(category => `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`).join("")}</select></label><span id="visible-products">${products.length} styles</span><label class="collection-control sort-control"><span>Sort by</span><select id="product-sort"><option value="featured">Featured</option><option value="price-asc">Price: Low to High</option><option value="price-desc">Price: High to Low</option><option value="name-asc">Name: A–Z</option></select></label>`;
+    const filterSelect = toolbar.querySelector("#category-filter");
+    const sortSelect = toolbar.querySelector("#product-sort");
+    const count = toolbar.querySelector("#visible-products");
+    const refresh = () => {
+      const category = filterSelect.value;
+      const sorted = [...products].sort((a, b) => {
+        if (sortSelect.value === "price-asc") return Number(a.dataset.price) - Number(b.dataset.price);
+        if (sortSelect.value === "price-desc") return Number(b.dataset.price) - Number(a.dataset.price);
+        if (sortSelect.value === "name-asc") return a.dataset.name.localeCompare(b.dataset.name);
+        return Number(a.dataset.featuredOrder) - Number(b.dataset.featuredOrder);
+      });
+      sorted.forEach(product => {
+        const type = product.querySelector(".product-type")?.textContent.trim();
+        product.hidden = category !== "all" && type !== category;
+        grid.appendChild(product);
+      });
+      const visible = products.filter(product => !product.hidden).length;
+      count.textContent = `${visible} ${visible === 1 ? "style" : "styles"}`;
+    };
+    filterSelect.addEventListener("change", refresh);
+    sortSelect.addEventListener("change", refresh);
+  }
+
+  initializeCollectionTools();
   buildCart(); renderCart(); cartToggle?.addEventListener("click", () => cartPanel.classList.contains("open") ? closeCart() : openCart());
   document.addEventListener("click", event => { const button = event.target.closest("[data-action]"); if (!button?.closest(".cart-panel")) return; const index = Number(button.dataset.index); if (button.dataset.action === "increase") cart[index].quantity += 1; if (button.dataset.action === "decrease") cart[index].quantity -= 1; if (button.dataset.action === "remove" || cart[index]?.quantity === 0) cart.splice(index, 1); saveCart(); renderCart(); });
   document.addEventListener("keydown", event => { if (event.key === "Escape" && cartPanel?.classList.contains("open")) closeCart(); });
